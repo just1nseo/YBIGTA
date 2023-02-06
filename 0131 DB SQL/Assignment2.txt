@@ -1,0 +1,10 @@
+WITH COST AS (
+	SELECT a.OrderID, (a.Quantity * b.Price) as NetPrice, c.CustomerID
+    FROM OrderDetails as a, Products as b, Orders as c
+    WHERE a.ProductID = b.ProductID
+    AND a.OrderID = c.OrderID
+    GROUP BY a.OrderID)
+SELECT e.CustomerName, SUM(d.NetPrice) as NetSpend
+FROM COST as d, Customers as e
+WHERE d.CustomerID = e.CustomerID
+and d.NetPrice > 10000
